@@ -1,0 +1,56 @@
+CREATE TABLE IF NOT EXISTS PERSON (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    addressLine1 TEXT,
+    townCity TEXT,
+    postcode TEXT,
+    telephone TEXT,
+    taxRef TEXT,
+    timestamp TEXT
+);
+
+CREATE TABLE IF NOT EXISTS  SCHOOL (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    addressLine1 TEXT,
+    townCity TEXT,
+    postcode TEXT,
+    timestamp TEXT
+);
+
+CREATE TABLE IF NOT EXISTS  VISIT (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    schoolId INTEGER,
+    date TEXT,
+    ampm TEXT,
+    hours INTEGER,
+    state TEXT,
+    timestamp TEXT
+);
+
+CREATE TABLE IF NOT EXISTS  EXPENSE (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    description TEXT,
+    value REAL,
+    state TEXT,
+    timestamp TEXT
+);
+
+CREATE TABLE IF NOT EXISTS  INVOICE (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    personId INTEGER,
+    dateSubmitted TEXT,
+    datePaid TEXT,
+    total REAL,
+    state TEXT,
+    timestamp TEXT
+);
+
+CREATE TABLE IF NOT EXISTS   INVOICE_ITEM (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    invoiceId INTEGER,
+    type TEXT,
+    claimId INTEGER,
+    state TEXT,
+    timestamp TEXT
+);
