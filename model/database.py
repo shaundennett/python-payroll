@@ -81,56 +81,80 @@ def create_invoice(db_file, invoice):
         cursor.execute("""
             INSERT INTO INVOICE_ITEM (invoiceId, type, claimId, state, timestamp)
             VALUES (?, ?, ?, ?, ?)
-        """, (invoice_id, item.type, item.claimId, item.state, item.timestamp))
+        """, (invoice_id, item.type, invoice_id, item.state, item.timestamp))
 
     conn.commit()
     conn.close()
 
 
 def read_persons(db_file):
+    results = []
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM PERSON")
     rows = cursor.fetchall()
+    for item in rows:
+        results.append(Person(*item))
     conn.close()
-    return rows
+    return results
 
 
 def read_schools(db_file):
+    results = []
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM SCHOOL")
     rows = cursor.fetchall()
+    for item in rows:
+        results.append(School(*item))
     conn.close()
-    return rows
+    return results
 
 
 def read_visits(db_file):
+    results = []
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM VISIT")
     rows = cursor.fetchall()
+    for item in rows:
+        results.append(Visit(*item))
     conn.close()
-    return rows
+    return results
 
 
 def read_expenses(db_file):
+    results = []
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM EXPENSE")
     rows = cursor.fetchall()
+    for item in rows:
+        results.append(Expense(*item))
     conn.close()
-    return rows
+    return results
 
 
 def read_invoices(db_file):
+    results = []
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM INVOICE")
     rows = cursor.fetchall()
+    for item in rows:
+        results.append(Invoice(*item))
     conn.close()
-    return rows
-
+    return results
+def read_invoice_lines(db_file, id):
+    results = []
+    conn = sqlite3.connect(db_file)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM INVOICE_ITEM WHERE claimId = ? ", (id,))
+    rows = cursor.fetchall()
+    for item in rows:
+        results.append(InvoiceItem(*item))
+    conn.close()
+    return results
 
 def read_complete_invoice(db_file, id):
     conn = sqlite3.connect(db_file)
@@ -139,7 +163,9 @@ def read_complete_invoice(db_file, id):
     rows = cursor.fetchall()
     results = []
     for item in rows:
-        results.append(Invoice(item[0],item[1],item[2],item[3],item[4],item[5],item[6]))
+        invoice = Invoice(*item)
+        invoice.invoice_items = read_invoice_lines(db_file,invoice.id)
+        results.append(invoice)
     conn.close()
     return results
 

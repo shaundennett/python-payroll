@@ -39,6 +39,7 @@ def test_create_and_read_invoice(db):
     invoice_item = InvoiceItem(None, 1, 'Product', 1, 'Pending', '2022-02-16')
     invoice.add_invoice_item(invoice_item)
     database.create_invoice(db, invoice)
+
     invoices = database.read_complete_invoice(db,4)
     print("Invoices:")
     for invoice in invoices:
