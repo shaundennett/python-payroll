@@ -93,10 +93,8 @@ def read_persons(db_file):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM PERSON")
     rows = cursor.fetchall()
-    for item in rows:
-        results.append(Person(*item))
-    conn.close()
-    return results
+
+    return rows
 
 
 def read_schools(db_file):
