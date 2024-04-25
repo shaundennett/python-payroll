@@ -2,135 +2,89 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class Person:
-    def __init__(self, id, name, addressLine1, townCity, postcode, telephone, taxRef, timestamp):
-        self.id = id
-        self.name = name
-        self.addressLine1 = addressLine1
-        self.townCity = townCity
-        self.postcode = postcode
-        self.telephone = telephone
-        self.taxRef = taxRef
-        self.timestamp = timestamp
-
-
-class PersonDialog:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Person Management")
-
-        self.person_list = [
-            Person(1, "John Doe", "123 Main St", "Anytown", "ABC123", "1234567890", "T123456", "2024-04-12"),
-            Person(2, "Jane Smith", "456 Elm St", "Othertown", "XYZ789", "0987654321", "T987654", "2024-04-12")
-        ]
-
-        self.selected_person = None
-
+class PersonPanel(tk.Frame):
+    def __init__(self, master, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
+        self.master = master
         self.create_widgets()
+        self.populate_table()
 
     def create_widgets(self):
-        # Top Frame
-        top_frame = tk.Frame(self.root)
-        top_frame.pack(fill=tk.BOTH, expand=True)
+        # Top Section
+        self.top_section = tk.Frame(self)
+        self.top_section.grid(row=0, column=0, sticky="nsew", pady=10)
+
+        labels = ["ID", "Name", "Address Line 1", "Town/City", "Postcode", "Telephone", "Tax Ref", "Timestamp"]
+        self.entry_vars = {}
+        for i, label in enumerate(labels):
+            label = tk.Label(self.top_section, text=label)
+            label.grid(row=i, column=0, sticky="w", padx=10, pady=5)
+            entry_var = tk.StringVar()
+            entry = tk.Entry(self.top_section, textvariable=entry_var)
+            entry.grid(row=i, column=1, sticky="ew", padx=10, pady=5)
+            self.entry_vars[label.cget("text")] = entry_var
 
         # CRUD Buttons
-        crud_frame = tk.Frame(top_frame)
-        crud_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        self.button_frame = tk.Frame(self)
+        self.button_frame.grid(row=1, column=0, sticky="nsew")
 
-        tk.Button(crud_frame, text="Create", command=self.create_person).pack(fill=tk.X, padx=5, pady=2)
-        tk.Button(crud_frame, text="Read", command=self.read_person).pack(fill=tk.X, padx=5, pady=2)
-        tk.Button(crud_frame, text="Update", command=self.update_person).pack(fill=tk.X, padx=5, pady=2)
-        tk.Button(crud_frame, text="Delete", command=self.delete_person).pack(fill=tk.X, padx=5, pady=2)
-        tk.Button(crud_frame, text="Refresh", command=self.refresh_table).pack(fill=tk.X, padx=5, pady=2)
-
-        # Person Details Panel
-        details_frame = tk.Frame(top_frame)
-        details_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-
-        tk.Label(details_frame, text="ID:").grid(row=0, column=0, sticky=tk.E)
-        self.id_entry = tk.Entry(details_frame, state="disabled")
-        self.id_entry.grid(row=0, column=1)
-
-        tk.Label(details_frame, text="Name:").grid(row=1, column=0, sticky=tk.E)
-        self.name_entry = tk.Entry(details_frame)
-        self.name_entry.grid(row=1, column=1)
-
-        tk.Label(details_frame, text="Address:").grid(row=2, column=0, sticky=tk.E)
-        self.address_entry = tk.Entry(details_frame)
-        self.address_entry.grid(row=2, column=1)
-
-        tk.Label(details_frame, text="Timestamp:").grid(row=3, column=0, sticky=tk.E)
-        self.timestamp_entry = tk.Entry(details_frame, state="disabled")
-        self.timestamp_entry.grid(row=3, column=1)
+        crud_buttons = [("Create", self.create_person), ("Read", self.read_person), ("Update", self.update_person),
+                        ("Delete", self.delete_person), ("Refresh", self.populate_table)]
+        for i, (text, command) in enumerate(crud_buttons):
+            button = tk.Button(self.button_frame, text=text, command=command)
+            button.grid(row=0, column=i, sticky="ew")
 
         # Table
-        table_frame = tk.Frame(self.root)
-        table_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        self.table = ttk.Treeview(self, columns=["ID", "Name", "Address Line 1", "Timestamp"])
+        self.table.grid(row=2, column=0, sticky="nsew")
+        self.table.heading("#0", text="ID")
+        for column in self.table["columns"]:
+            self.table.heading(column, text=column)
+        self.table.bind("<ButtonRelease-1>", self.on_table_click)
 
-        self.table = ttk.Treeview(table_frame, columns=("ID", "Name", "Address", "Timestamp"), show="headings")
-        self.table.heading("ID", text="ID")
-        self.table.heading("Name", text="Name")
-        self.table.heading("Address", text="Address")
-        self.table.heading("Timestamp", text="Timestamp")
-        self.table.pack(fill=tk.BOTH, expand=True)
-
-        self.refresh_table()
-
-        self.table.bind("<<TreeviewSelect>>", self.on_table_select)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
     def create_person(self):
-        # Implementation for creating a new person
         pass
 
     def read_person(self):
-        # Implementation for reading a selected person's details
         pass
 
     def update_person(self):
-        # Implementation for updating a selected person's details
         pass
 
     def delete_person(self):
-        # Implementation for deleting a selected person
         pass
 
-    def refresh_table(self):
-        # Clear existing items in the table
+    def populate_table(self):
+        # Dummy data for demonstration
+        data = [
+            (1, "John Doe", "123 Main St", "2022-04-12"),
+            (2, "Jane Smith", "456 Elm St", "2022-04-13")
+        ]
         self.table.delete(*self.table.get_children())
+        for row in data:
+            self.table.insert("", "end", values=row)
 
-        # Populate the table with person data
-        for person in self.person_list:
-            self.table.insert("", "end", values=(person.id, person.name, person.addressLine1, person.timestamp))
-
-    def on_table_select(self, event):
-        # Get the selected item from the table
-        selected_item = self.table.focus()
-
-        # Get the data associated with the selected item
+    def on_table_click(self, event):
+        selected_item = self.table.selection()
         if selected_item:
-            item_data = self.table.item(selected_item)
-            self.selected_person = item_data["values"]
-
-            # Populate the details panel with the selected person's data
-            self.id_entry.config(state="normal")
-            self.id_entry.delete(0, tk.END)
-            self.id_entry.insert(0, self.selected_person[0])
-            self.id_entry.config(state="disabled")
-
-            self.name_entry.delete(0, tk.END)
-            self.name_entry.insert(0, self.selected_person[1])
-
-            self.address_entry.delete(0, tk.END)
-            self.address_entry.insert(0, self.selected_person[2])
-
-            self.timestamp_entry.config(state="normal")
-            self.timestamp_entry.delete(0, tk.END)
-            self.timestamp_entry.insert(0, self.selected_person[3])
-            self.timestamp_entry.config(state="disabled")
+            values = self.table.item(selected_item, "values")
+            for label, value in zip(["ID", "Name", "Address Line 1", "Timestamp"], values):
+                self.entry_vars[label].set(value)
 
 
-# Main
+# Example usage
 if __name__ == "__main__":
     root = tk.Tk()
-    app = PersonDialog(root)
+    tab_control = ttk.Notebook(root)
+
+    person_tab = ttk.Frame(tab_control)
+    tab_control.add(person_tab, text="Person")
+    tab_control.pack(expand=True, fill="both")
+
+    person_panel = PersonPanel(person_tab)
+    person_panel.pack(expand=True, fill="both")
+
     root.mainloop()
