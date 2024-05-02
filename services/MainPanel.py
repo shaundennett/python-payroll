@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from UserService import UserSservice
+from view.UserPanel import PersonPanel
 
-class PersonPanel(tk.Frame):
+
+class ApplicationPanel(tk.Frame):
 
     def __init__(self, modelRef):
 

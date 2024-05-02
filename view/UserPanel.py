@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+import services.UserService as user_services
+import controller.MainController as app_control
 
 
 class PersonPanel(tk.Frame):
-    def __init__(self, master, *args, **kwargs):
+    def __init__(self, master,controller:app_control , *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.master = master
+        self.controller = controller
         self.create_widgets()
         self.populate_table()
 
@@ -59,6 +62,8 @@ class PersonPanel(tk.Frame):
 
     def populate_table(self):
         # Dummy data for demonstration
+
+
         data = [
             (1, "John Doe", "123 Main St", "2022-04-12"),
             (2, "Jane Smith", "456 Elm St", "2022-04-13")

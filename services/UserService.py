@@ -1,7 +1,10 @@
 from model.pojos import Person, School, Visit, Expense, Invoice, InvoiceItem
+
+
 import model.database as database
 
-class UserSservice:
+
+class UserService:
 
     def __init__(self, db):
         self.db = db
