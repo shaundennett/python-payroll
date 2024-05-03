@@ -9,6 +9,8 @@ class UserService:
 
     def get_all_person(self):
 
+        database.list_tables(self.db)
+
         result = []
         rows = database.read_persons(self.db)
         for item in rows:

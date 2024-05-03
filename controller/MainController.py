@@ -13,7 +13,7 @@ class MainController:
         self.main()
 
     def runtime_params(self):
-        self.db = "../payroll.db"
+        self.db = "C:\work\python-payroll\payroll.db"
         self.schema = "../schema.txt"
 
     def main(self):

@@ -279,3 +279,23 @@ def delete_invoice(db_file, invoice_id):
     cursor.execute("DELETE FROM INVOICE WHERE id=?", (invoice_id,))
     conn.commit()
     conn.close()
+def list_tables(db_file):
+    # Connect to the SQLite database
+    conn = sqlite3.connect(db_file)
+    # Create a cursor object to execute SQL queries
+    cursor = conn.cursor()
+
+    # Execute a query to retrieve the names of all tables in the database
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+
+    # Fetch all rows (table names) from the result set
+    tables = cursor.fetchall()
+
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+
+    # Extract table names from the result set and return as a list
+    for table in tables:
+        print(table)
+
