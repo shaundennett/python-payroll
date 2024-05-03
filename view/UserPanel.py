@@ -67,7 +67,8 @@ class PersonPanel(tk.Frame):
 
         self.table.delete(*self.table.get_children())
         for row in data:
-            self.table.insert("", "end", values=row)
+
+            self.table.insert("", "end", values=row.get_data())
 
     def on_table_click(self, event):
         selected_item = self.table.selection()
