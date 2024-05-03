@@ -1,11 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 import services.UserService as user_services
-import controller.MainController as app_control
 
 
 class PersonPanel(tk.Frame):
-    def __init__(self, master,controller:app_control , *args, **kwargs):
+    def __init__(self, master,controller , *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.master = master
         self.controller = controller
@@ -38,7 +37,9 @@ class PersonPanel(tk.Frame):
             button.grid(row=0, column=i, sticky="ew")
 
         # Table
-        self.table = ttk.Treeview(self, columns=["ID", "Name", "Address Line 1", "Timestamp"])
+        #[1, 'John Doe', '123 Main St', 'Anytown', '12345', '555-1234', '123-456-789', '2022-02-16']
+
+        self.table = ttk.Treeview(self, columns=["ID", "Name", "Address Line 1","Postcode","Telephone","Tax Ref", "Timestamp"])
         self.table.grid(row=2, column=0, sticky="nsew")
         self.table.heading("#0", text="ID")
         for column in self.table["columns"]:
@@ -62,12 +63,8 @@ class PersonPanel(tk.Frame):
 
     def populate_table(self):
         # Dummy data for demonstration
+        data = self.controller.user_service.get_all_person()
 
-
-        data = [
-            (1, "John Doe", "123 Main St", "2022-04-12"),
-            (2, "Jane Smith", "456 Elm St", "2022-04-13")
-        ]
         self.table.delete(*self.table.get_children())
         for row in data:
             self.table.insert("", "end", values=row)

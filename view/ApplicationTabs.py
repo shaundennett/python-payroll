@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import view.UserPanel as person
+from view.UserPanel import PersonPanel
 
 
 class ApplicationTabs():
@@ -19,7 +19,7 @@ class ApplicationTabs():
         person_tab = ttk.Frame(tab_control)
         tab_control.add(person_tab, text="Person")
         tab_control.pack(expand=True, fill="both")
-        person_panel = person.PersonPanel(person_tab, self.controller)
+        person_panel = PersonPanel(person_tab, self.controller)
         person_panel.pack(expand=True, fill="both")
 
 

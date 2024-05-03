@@ -11,6 +11,10 @@ class Person:
         self.timestamp = timestamp
     def __str__(self):
         return f"Person(id={self.id}, name='{self.name}', addressLine1='{self.addressLine1}', townCity='{self.townCity}', postcode='{self.postcode}', telephone='{self.telephone}', taxRef='{self.taxRef}', timestamp='{self.timestamp}')"
+    def get_data(self) -> ():
+
+        data = (self.id,self.name,self.addressLine1, self.townCity, self.postcode, self.telephone, self.taxRef, self.timestamp)
+        return data
 
 class School:
     def __init__(self, id, name, addressLine1, townCity, postcode, timestamp):

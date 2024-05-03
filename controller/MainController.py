@@ -1,6 +1,5 @@
 import model.pojos as pojos
-import services.MainPanel as main
-import view.ApplicationTabs as top
+from view.ApplicationTabs import ApplicationTabs
 from services.UserService import UserService
 
 class MainController:
@@ -10,6 +9,7 @@ class MainController:
     schema = ""
     def __init__(self):
         self.runtime_params()
+        self.user_service = UserService(self.db)
         self.main()
 
     def runtime_params(self):
@@ -18,7 +18,7 @@ class MainController:
 
     def main(self):
 
-        application = top.ApplicationTabs(self)
+        application = ApplicationTabs(self)
     def getUserServces(self) :
         if self.user_service == None:
             self.user_service = UserService(self.db)

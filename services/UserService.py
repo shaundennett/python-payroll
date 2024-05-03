@@ -1,6 +1,4 @@
 from model.pojos import Person, School, Visit, Expense, Invoice, InvoiceItem
-
-
 import model.database as database
 
 
@@ -18,3 +16,8 @@ class UserService:
 
         return result
 
+if __name__ == "__main__":
+    serviec = UserService("../payroll.db")
+
+    result = serviec.get_all_person()
+    print(result[0].get_data())
