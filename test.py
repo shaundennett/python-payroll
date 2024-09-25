@@ -22,7 +22,7 @@ def list_tables(db_file):
 
 
 # Replace 'your_database.db' with the path to your SQLite database file
-db_file = 'payroll.db'
+db_file = 'payroll-test.db'
 tables = list_tables(db_file)
 
 # Print the list of tables
